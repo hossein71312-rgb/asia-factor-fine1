@@ -251,7 +251,9 @@ public class MainActivity extends Activity {
         public String saveFile(String base64, String name, String mime) {
             try {
                 byte[] data = Base64.decode(base64, Base64.DEFAULT);
-                String safe = name.replaceAll("[\\\\/:*?\"<>|]", "_");
+               String safe = (name == null || name.trim().isEmpty())
+        ? "invoice.pdf"
+        : name.replaceAll("[\\\\/:*?\"<>|]", "_");
                 String where;
                 if (Build.VERSION.SDK_INT >= 29) {
                     ContentValues v = new ContentValues();
@@ -284,7 +286,9 @@ public class MainActivity extends Activity {
                 byte[] data = Base64.decode(base64, Base64.DEFAULT);
                 File dir = new File(getCacheDir(), "shared");
                 if (!dir.exists() && !dir.mkdirs()) throw new java.io.IOException("Cannot create share directory");
-                String safe = name.replaceAll("[\\\\\\\\/:*?\\"<>|]", "_");
+                String safe = (name == null || name.trim().isEmpty())
+        ? "invoice.pdf"
+        : name.replaceAll("[\\\\/:*?\"<>|]", "_");
                 File file = new File(dir, safe);
                 try (FileOutputStream out = new FileOutputStream(file)) {
                     out.write(data);
